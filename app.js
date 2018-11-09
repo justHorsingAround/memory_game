@@ -55,7 +55,7 @@ if (cluster.isMaster) {
     });
 
     app.get('/getcards', function(req, resp){
-        let currentCard = req.url.searchParams.get('cards');
+        let currentCard = req.query.card;
         console.log(currentCard);
         var img = fs.readFileSync(imageDir + '/' + currentCard);
         resp.writeHead(200, {'Content-Type': 'image/png'});
