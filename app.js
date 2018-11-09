@@ -16,7 +16,6 @@ if (cluster.isMaster) {
     const fs = require('fs');
     const express = require('express');
     const path = require('path');
-    const _url = require('url');
     var app = express();
 
     const imageDir = './cards';
@@ -56,13 +55,10 @@ if (cluster.isMaster) {
 
     app.get('/getcards', function(req, resp){
         let currentCard = req.query.card;
-        console.log(currentCard);
         var img = fs.readFileSync(imageDir + '/' + currentCard);
         resp.writeHead(200, {'Content-Type': 'image/png'});
         resp.end(img, 'binary');
     });
-
-
 
     if(!module.parent){
         app.listen(port, function(){

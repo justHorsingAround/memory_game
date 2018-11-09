@@ -29,3 +29,9 @@ body {
     align-content: center;
     text-align: center;
 }
+
+.cards {
+    display: none;
+    align-content: center;
+    text-align: center;
+}
