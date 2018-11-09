@@ -15,7 +15,10 @@ if (cluster.isMaster) {
     var bodyParser = require('body-parser');
     const fs = require('fs');
     const express = require('express');
+    const path = require('path');
     var app = express();
+
+    const imageDir = './cards';
 
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
@@ -52,10 +55,56 @@ if (cluster.isMaster) {
         });
     });
 
+    app.get('/start/12', function(req, resp) {  //hard coded for testing
+        var img = fs.readFileSync(imageDir + '/d3.png');
+        resp.writeHead(200, {'Content-Type': 'image/png' });
+        resp.end(img, 'binary');
+    });
+
     if(!module.parent){
         app.listen(port, function(){
             console.log("Server process started, id:" + cluster.worker.id);
         });
     }
+
+    /*
+    function readImages(res){
+        if (typeof pic === 'undefined') {
+            getImages(imageDir, function (err, files) {
+                var imageLists = '<ul>';
+                for (var i=0; i<files.length; i++) {
+                    console.log(files[i]);
+                    imageLists += '<li><a href= localhost:' + port + '/?image=' + files[i] + '">' + files[i] + '</li>';
+                }
+                imageLists += '</ul>';
+                res.writeHead(200, {'Content-type':'text/html'});
+                res.end(imageLists);
+            });
+        } else {
+            fs.readFile(imageDir + pic, function (err, content) {
+                if (err) {
+                    res.writeHead(400, {'Content-type':'text/html'})
+                    console.log(err);
+                    res.end("No such image");
+                } else {
+                    res.writeHead(200,{'Content-type':'image/png'});
+                    res.end(content);
+                }
+            });
+        }
+    }
+
+    function getImages(imageDir, callback) {
+        var fileType = '.png',
+            files = [], i;
+        fs.readdir(imageDir, function (err, list) {
+            for(i=0; i<list.length; i++) {
+                if(path.extname(list[i]) === fileType) {
+                    files.push(list[i]);
+                }
+            }
+            callback(err, files);
+        });
+    }*/
 }
 
