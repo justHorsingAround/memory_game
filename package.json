@@ -1,0 +1,26 @@
+{
+  "name": "memory_game_back",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/justHorsingAround/memory_game.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/justHorsingAround/memory_game/issues"
+  },
+  "homepage": "https://github.com/justHorsingAround/memory_game#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cluster": "^0.7.7",
+    "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "mocha": "^5.2.0"
+  }
+}
