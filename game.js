@@ -57,15 +57,17 @@ function onGoodResponse(imageList){
 
 function processImageResult(){
     if (this.status == 200){
+        let cards = document.getElementById('cards');
 
+        let imgsrc = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(this.responseText)));
+        let img = document.createElement("img");
+        img.src = imgsrc;
+
+        cards.appendChild(img);
     }
     else {
         addErrorMessage(this.responseText);
     }
-
-
-    var outputImg = document.createElement('img');
-
 }
 
 
