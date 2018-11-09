@@ -36,6 +36,22 @@ if (cluster.isMaster) {
         });
     });
 
+    app.get('/main.css', function(req, resp) {
+        fs.readFile('main.css', function(err, data) {
+            resp.writeHead(200, {'Content-Type': 'text/css'});
+            resp.write(data);
+            resp.end();
+        });
+    });
+
+    app.get('/game.js', function(req, resp) {
+        fs.readFile('game.js', function(err, data) {
+            resp.writeHead(200, {'Content-Type': 'text/javascript'});
+            resp.write(data);
+            resp.end();
+        });
+    });
+
     if(!module.parent){
         app.listen(port, function(){
             console.log("Server process started, id:" + cluster.worker.id);
