@@ -55,10 +55,8 @@ if (cluster.isMaster) {
         });
     });
 
-    app.get('/start/12', function(req, resp) {  //hard coded for testing
-        var img = fs.readFileSync(imageDir + '/d3.png');
-        resp.writeHead(200, {'Content-Type': 'image/png' });
-        resp.end(img, 'binary');
+    app.get('/start/10', function(req, resp) {  //hard coded for now
+        getListOfCards(resp);
     });
 
     if(!module.parent){
@@ -67,44 +65,25 @@ if (cluster.isMaster) {
         });
     }
 
-    /*
-    function readImages(res){
-        if (typeof pic === 'undefined') {
-            getImages(imageDir, function (err, files) {
-                var imageLists = '<ul>';
-                for (var i=0; i<files.length; i++) {
-                    console.log(files[i]);
-                    imageLists += '<li><a href= localhost:' + port + '/?image=' + files[i] + '">' + files[i] + '</li>';
-                }
-                imageLists += '</ul>';
-                res.writeHead(200, {'Content-type':'text/html'});
-                res.end(imageLists);
-            });
-        } else {
-            fs.readFile(imageDir + pic, function (err, content) {
-                if (err) {
-                    res.writeHead(400, {'Content-type':'text/html'})
-                    console.log(err);
-                    res.end("No such image");
-                } else {
-                    res.writeHead(200,{'Content-type':'image/png'});
-                    res.end(content);
-                }
-            });
-        }
-    }
-
-    function getImages(imageDir, callback) {
-        var fileType = '.png',
-            files = [], i;
+    function getListOfCards(res){
+        files = [], i;
+        var fileType = '.png';
         fs.readdir(imageDir, function (err, list) {
             for(i=0; i<list.length; i++) {
                 if(path.extname(list[i]) === fileType) {
                     files.push(list[i]);
                 }
             }
-            callback(err, files);
+            var imageLists = '<ul>';
+            for (var i=0; i<files.length; i++) {
+                imageLists += '<li>' + files[i] + '</li>';
+            }
+            imageLists += '</ul>';
+            res.writeHead(200, {'Content-type':'text/html'});
+            res.end(imageLists);
         });
-    }*/
+    }
+
+   
 }
 

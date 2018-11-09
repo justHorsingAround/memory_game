@@ -9,7 +9,6 @@ function onStartButtonClicked(){
 }
 
 function requestCards(numberOfCards){
-
     const xhr = new XMLHttpRequest();
     const url = "http://localhost:9999/start/" + numberOfCards;
     xhr.addEventListener('load', onStartResponse);
@@ -17,9 +16,31 @@ function requestCards(numberOfCards){
     xhr.send();
 }
 
+function addToErrorMessage(error, message){
+    const pEl = document.createElement('p');
+    pEl.classList.add('message');
+    pEl.textContent = response.message;
+
+    loginErrDivEl.appendChild(pEl);
+
+}
+
 function onStartResponse(){
     let responseStatus = this.status;
-    console.log(responseStatus);
+    if(responseStatus == 200){
+        console.log("ok");
+    }
+    else {
+        let error = document.getElementById("error-msg");
+        error.style.display = 'block';
+        let response = JSON.parse(this.responseText);
+
+        const pEl = document.createElement('p');
+        pEl.classList.add('message');
+        pEl.textContent = response.message;
+
+        error.appendChild(pEl);
+    }
 }
 
 
