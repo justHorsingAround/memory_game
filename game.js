@@ -28,7 +28,7 @@ function addToErrorMessage(error, message){
 function onStartResponse(){
     let responseStatus = this.status;
     if(responseStatus == 200){
-        console.log("ok");
+        onGoodResponse(this.responseText);
     }
     else {
         let error = document.getElementById("error-msg");
@@ -40,6 +40,20 @@ function onStartResponse(){
         pEl.textContent = response.message;
 
         error.appendChild(pEl);
+    }
+}
+
+function onGoodResponse(imageList){
+    var img = imageList.split(',');
+    for (let i = 0; i < img.length; i++) {
+        if(img[i] !== ""){
+            console.log(img[i]);
+            const xhr = new XMLHttpRequest();
+            const url = "http://localhost:9999/getcards?card=" + img[i];
+            xhr.addEventListener('load', console.log("ok"));
+            xhr.open('GET', url);
+            xhr.send();
+        }
     }
 }
 

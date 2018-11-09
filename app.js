@@ -16,6 +16,7 @@ if (cluster.isMaster) {
     const fs = require('fs');
     const express = require('express');
     const path = require('path');
+    const _url = require('url');
     var app = express();
 
     const imageDir = './cards';
@@ -24,12 +25,6 @@ if (cluster.isMaster) {
     app.use(bodyParser.json());
 
     const port = 9999;
-
-    app.get('/echo', function(req, resp){
-        var currentTime = dateTime.create().format('Y-m-d H:M:S');
-        resp.status(200);
-        resp.send("The server responded at: " + currentTime);
-    });
 
     app.get('/', function(req, resp){
         fs.readFile('index.html', function(err, data) {
@@ -59,6 +54,16 @@ if (cluster.isMaster) {
         getListOfCards(resp);
     });
 
+    app.get('/getcards', function(req, resp){
+        let currentCard = req.url.searchParams.get('cards');
+        console.log(currentCard);
+        var img = fs.readFileSync(imageDir + '/' + currentCard);
+        resp.writeHead(200, {'Content-Type': 'image/png'});
+        resp.end(img, 'binary');
+    });
+
+
+
     if(!module.parent){
         app.listen(port, function(){
             console.log("Server process started, id:" + cluster.worker.id);
@@ -74,16 +79,12 @@ if (cluster.isMaster) {
                     files.push(list[i]);
                 }
             }
-            var imageLists = '<ul>';
-            for (var i=0; i<files.length; i++) {
-                imageLists += '<li>' + files[i] + '</li>';
-            }
-            imageLists += '</ul>';
             res.writeHead(200, {'Content-type':'text/html'});
-            res.end(imageLists);
+            for (var i=0; i<files.length; i++) {
+                res.write(files[i] + ',');
+            }
+            res.end();
         });
     }
-
-   
 }
 
